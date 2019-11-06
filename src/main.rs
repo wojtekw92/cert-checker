@@ -39,6 +39,7 @@ fn get_u64_value(input: Option<&str>, default_value: u64 ) -> u64 {
         None => default_value
     }
 }
+
 fn main() {
 
     let matches = App::new("cert-checker")
