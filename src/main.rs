@@ -4,7 +4,41 @@ use std::time::Duration;
 
 use clap::{App, Arg};
 
+use serde::{Serialize, Deserialize};
+use serde_json::json;
 
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all="camelCase")]
+enum CertyficateStatus {
+    Valid,
+    Invalid,
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all="camelCase")]
+struct CertyficateData {
+    domain: String,
+    status: CertyficateStatus,
+    #[serde(skip_serializing_if="Option::is_none")]
+    expire_in: Option<u64>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    expired_for: Option<u64>,
+}
+
+fn get_u64_value(input: Option<&str>, default_value: u64 ) -> u64 {
+    match input {
+        Some(val) => {
+            match val.parse::<u64>() {
+                Ok(val) => val,
+                Err(e) => {
+                    eprintln! ("Can not parse time value, using default error: {}", e);
+                    default_value
+                }
+            }
+        },
+        None => default_value
+    }
+}
 fn main() {
 
     let matches = App::new("cert-checker")
@@ -16,6 +50,12 @@ fn main() {
                 .short("t")
                 .help("The sleep time between tests")
                 .default_value("300")
+        )
+        .arg(
+            Arg::with_name("left")
+                .short("l")
+                .help("The day before expiration that should be warning")
+                .default_value("5")
         )
         .arg(
             Arg::with_name("domain")
