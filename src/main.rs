@@ -28,6 +28,23 @@ struct CertyficateData {
     #[serde(skip_serializing_if="Option::is_none")]
     expired_for: Option<i32>,
 }
+impl CertyficateData {
+    fn new(domain: &String, expire:i32, status: CertyficateStatus) -> CertyficateData {
+        CertyficateData {
+            domain: domain.to_string(),
+            status: status,
+            time_stamp: Local::now().to_rfc3339(),
+            expire_in: match expire {
+                x if x>0 => Some(x),
+                _ => None
+            },
+            expired_for: match expire {
+                x if x<=0 => Some(-x),
+                _ => None
+            }
+        }
+    } 
+}
 
 fn get_value<T: FromStr>(input: Option<&str>, default_value: T ) -> T {
     match input {
@@ -84,28 +101,25 @@ fn main() {
             let exp = SslExpiration::from_domain_name(&domain);
             match exp {
                 Ok(expiration) => {
-                    let status = CertyficateData {
-                        domain: domain.to_string(),
-                        time_stamp: Local::now().to_rfc3339(),
-                        status: match expiration.days() {
+                    let status = CertyficateData::new(
+                        domain, 
+                        expiration.days(),
+                        match expiration.days() {
                             x if x > left_warning_time => CertyficateStatus::Valid,
                             x if x > 0  => CertyficateStatus::SoonInvalid,
                             _ => CertyficateStatus::Invalid
-                        },
-                        expire_in: match expiration.days() {
-                            x if x>0 => Some(x),
-                            _ => None
-                        },
-                        expired_for: match expiration.days() {
-                            x if x<=0 => Some(-x),
-                            _ => None
-                        }
-                    };
+                        });
+
                     match serde_json::to_string(&status) {
                         Ok(x) => println!("{}", x),
                         Err(e) => eprintln!("Error during parsing CertyficateData: {}", e)
                     }
-                    
+                    // Add opsgenie integration below instead logging
+                    match status.status {
+                        CertyficateStatus::Valid => (),
+                        CertyficateStatus::SoonInvalid => println!("Warning! Certyficate for domain {}  will expire in {} days!", status.domain, status.expire_in.unwrap()),
+                        CertyficateStatus::Invalid => println!("Error Certyficate for domain {} is invalid!", status.domain)
+                    }
                 },
                 Err(e) => println!("Error for domain \"{}\": {}", domain, e)
             }
