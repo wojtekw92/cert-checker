@@ -5,8 +5,9 @@ use std::time::Duration;
 use clap::{App, Arg};
 
 use serde::{Serialize, Deserialize};
-use serde_json::json;
+use serde_json;
 use std::str::FromStr;
+use chrono::Local;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all="camelCase")]
@@ -21,6 +22,7 @@ enum CertyficateStatus {
 struct CertyficateData {
     domain: String,
     status: CertyficateStatus,
+    time_stamp: String,
     #[serde(skip_serializing_if="Option::is_none")]
     expire_in: Option<i32>,
     #[serde(skip_serializing_if="Option::is_none")]
@@ -84,6 +86,7 @@ fn main() {
                 Ok(expiration) => {
                     let status = CertyficateData {
                         domain: domain.to_string(),
+                        time_stamp: Local::now().to_rfc3339(),
                         status: match expiration.days() {
                             x if x > left_warning_time => CertyficateStatus::Valid,
                             x if x > 0  => CertyficateStatus::SoonInvalid,
