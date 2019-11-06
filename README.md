@@ -43,3 +43,4 @@ using with opsgenie:
 - [ ] Log levels for logging
 - [ ] Exporting data to prometheus
 - [ ] webhook support
+- [ ] Add unit tests etc.
