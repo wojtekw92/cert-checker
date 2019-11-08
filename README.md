@@ -5,6 +5,10 @@ Simple tool for certifcate expiration date validation. It can create alerts for 
 The best option would be to use ready docker image, You can find it here.
 
 ### docker
+to run in docker just start
+```
+docker run wojtekw92/cert-checker -d www.google.com expired.badssl.com
+```
 
 ### kubernetes
 
