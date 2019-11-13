@@ -12,6 +12,8 @@ docker run wojtekw92/cert-checker -d www.google.com expired.badssl.com
 
 ### kubernetes
 
+in `k8s` dir you have ready to use deployment file you just need to chage domains and apply it to your cluster
+
 ### bare usage
 
 ```
