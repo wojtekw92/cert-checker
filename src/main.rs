@@ -1,51 +1,11 @@
 use ssl_expiration::SslExpiration;
 use std::thread;
 use std::time::Duration;
-
-
-
-use serde::{Serialize, Deserialize};
 use serde_json;
-use chrono::Local;
+
 mod helpers;
-
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all="camelCase")]
-enum CertyficateStatus {
-    Valid,
-    SoonInvalid,
-    Invalid,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all="camelCase")]
-struct CertyficateData {
-    domain: String,
-    status: CertyficateStatus,
-    time_stamp: String,
-    #[serde(skip_serializing_if="Option::is_none")]
-    expire_in: Option<i32>,
-    #[serde(skip_serializing_if="Option::is_none")]
-    expired_for: Option<i32>,
-}
-impl CertyficateData {
-    fn new(domain: &String, expire:i32, status: CertyficateStatus) -> CertyficateData {
-        CertyficateData {
-            domain: domain.to_string(),
-            status: status,
-            time_stamp: Local::now().to_rfc3339(),
-            expire_in: match expire {
-                x if x>0 => Some(x),
-                _ => None
-            },
-            expired_for: match expire {
-                x if x<=0 => Some(-x),
-                _ => None
-            }
-        }
-    } 
-}
+mod cert_info;
+use cert_info::{CertyficateStatus, CertyficateData};
 
 fn main() {
     let matches = helpers::parse_params();
