@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-checker
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cert-checker
+  namespace: cert-checker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cert-checker
+  template:
+    metadata:
+      labels:
+        app: cert-checker
+    spec:
+      containers:
+        - name: cert-checker
+          image: wojtekw92/cert-checker:1.0
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          command:
+            - -t 300
+            # add domains here
+            - -d www.google.com
+            - expired.badssl.com
