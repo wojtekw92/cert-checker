@@ -32,7 +32,7 @@ pub fn parse_params() -> ArgMatches<'static> {
         .arg(
             Arg::with_name("left")
                 .short("l")
-                .help("The day before expiration that should be warning")
+                .help("Time before expiration that should be warning in days")
                 .default_value("5")
         )
         .arg(

@@ -18,7 +18,7 @@ fn main() {
         None => vec![]
     };
 
-    let handle = thread::spawn(move || loop { //remove later this "move" for now we Hacky :) 
+    let handle = thread::spawn(move || loop { //remove later this "move" for now we are Hacky :) 
         for domain in &domains {
             let exp = SslExpiration::from_domain_name(&domain);
             match exp {

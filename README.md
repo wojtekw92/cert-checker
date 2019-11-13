@@ -30,6 +30,7 @@ FLAGS:
 
 OPTIONS:
     -d <domain>        Domain names to check
+    -l <left>          Time before expiration that should be warning in days [default: 5]
     -t <time>          The sleep time between tests [default: 300]
 ```
 By default application will check all domains added after `-d` every 300 seconds.
@@ -50,3 +51,4 @@ using with opsgenie:
 - [ ] Exporting data to prometheus
 - [ ] webhook support
 - [ ] Add unit tests etc.
+- [ ] Opsgenie Integration
