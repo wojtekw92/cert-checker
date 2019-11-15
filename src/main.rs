@@ -30,12 +30,24 @@ fn main() {
                             x if x > left_warning_time => CertyficateStatus::Valid,
                             x if x > 0  => CertyficateStatus::SoonInvalid,
                             _ => CertyficateStatus::Invalid
-                        });
+                        }
+                    );
+                    match matches.is_present("json") {
+                        true => match serde_json::to_string(&status) {
+                            Ok(x) => println!("{}", x),
+                            Err(e) => eprintln!("Error during parsing CertyficateData: {}", e)
+                        },
+                        false => println!("[{}] {}  status: {:?} left: {}",
+                            status.time_stamp,
+                            status.domain,
+                            status.status,
+                            match status.expire_in {
+                                Some(x) =>x,
+                                None => 0,
+                            }
+                        )
+                    };
 
-                    match serde_json::to_string(&status) {
-                        Ok(x) => println!("{}", x),
-                        Err(e) => eprintln!("Error during parsing CertyficateData: {}", e)
-                    }
                     // Add opsgenie integration below instead logging
                     match status.status {
                         CertyficateStatus::Valid => (),

@@ -22,10 +22,11 @@ Wojciech Wozniak <wwozniak92@gmail.com>
 certyficate checking tool
 
 USAGE:
-    cert-checker [OPTIONS] -d <domain>
+    cert-checker [FLAGS] [OPTIONS] -d <domain>
 
 FLAGS:
     -h, --help       Prints help information
+    -j               json output log
     -V, --version    Prints version information
 
 OPTIONS:

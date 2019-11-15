@@ -36,6 +36,11 @@ pub fn parse_params() -> ArgMatches<'static> {
                 .default_value("5")
         )
         .arg(
+            Arg::with_name("json")
+                .short("j")
+                .help("json output log")
+            )
+        .arg(
             Arg::with_name("domain")
                 .required(true)
                 .short("d")
