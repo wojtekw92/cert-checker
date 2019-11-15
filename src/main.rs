@@ -11,14 +11,13 @@ fn main() {
     let matches = helpers::parse_params();
     let time: u64 = helpers::get_value(matches.value_of("time"), 300);
     let left_warning_time: i32 = helpers::get_value(matches.value_of("left"), 5);
-    
 
     let domains: Vec<_> = match matches.values_of_lossy("domain") {
         Some(val) => val.clone(),
         None => vec![]
     };
 
-    let handle = thread::spawn(move || loop { //remove later this "move" for now we are Hacky :) 
+    let domain_checking_thread = thread::spawn(move || loop { //remove later this "move" for now we are Hacky :)
         for domain in &domains {
             let exp = SslExpiration::from_domain_name(&domain);
             match exp {
@@ -61,7 +60,5 @@ fn main() {
         thread::sleep(Duration::from_secs(time));
     });
 
-    handle.join().unwrap();
-
-    
+    domain_checking_thread.join().unwrap();
 }
