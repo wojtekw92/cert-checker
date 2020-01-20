@@ -30,9 +30,11 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -d <domain>        Domain names to check
-    -l <left>          Time before expiration that should be warning in days [default: 5]
-    -t <time>          The sleep time between tests [default: 300]
+    -d <domain>         Domain names to check
+    -l <left>           Time before expiration that should be warning in days [default: 5]
+    -o <API-KEY>        opsgenie intergration to infrom about soon failing certs
+    -t <time>           The sleep time between tests [default: 300]
+    -w <URL>            Webhook for failed or failing soon certs
 ```
 By default application will check all domains added after `-d` every 300 seconds.
 

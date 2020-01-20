@@ -1,7 +1,7 @@
 use chrono::Local;
 use serde::{Serialize, Deserialize};
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[serde(rename_all="camelCase")]
 pub enum CertyficateStatus {
     Valid,
@@ -20,11 +20,12 @@ pub struct CertyficateData {
     #[serde(skip_serializing_if="Option::is_none")]
     pub expired_for: Option<i32>,
 }
+
 impl CertyficateData {
     pub fn new(domain: &String, expire:i32, status: CertyficateStatus) -> CertyficateData {
         CertyficateData {
             domain: domain.to_string(),
-            status: status,
+            status: status.clone(),
             time_stamp: Local::now().to_rfc3339(),
             expire_in: match expire {
                 x if x > 0 => Some(x),

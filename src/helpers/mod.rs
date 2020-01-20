@@ -36,6 +36,20 @@ pub fn parse_params() -> ArgMatches<'static> {
                 .default_value("5")
         )
         .arg(
+            Arg::with_name("webhook")
+                .short("w")
+                .help("Webhook for failed or failing soon certs")
+                .value_name("URL")
+                .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("opsgenie")
+                .short("o")
+                .help("opsgenie intergration to infrom about soon failing certs")
+                .value_name("API-KEY")
+                .takes_value(true)
+        )
+        .arg(
             Arg::with_name("json")
                 .short("j")
                 .help("json output log")
