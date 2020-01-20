@@ -20,7 +20,7 @@ RUN cargo install --path .
 
 FROM ubuntu:18.04
 RUN apt-get update &&\
-    apt-get install --no-install-recommends libssl1.1 -y  &&\
+    apt-get install --no-install-recommends libssl1.1 ca-certificates -y  &&\
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=cargo-build /usr/local/cargo/bin/cert-checker /usr/local/bin/cert-checker
