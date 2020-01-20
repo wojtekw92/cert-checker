@@ -54,4 +54,4 @@ using with opsgenie:
 - [ ] Exporting data to prometheus
 - [ ] webhook support
 - [ ] Add unit tests etc.
-- [ ] Opsgenie Integration
+- [+] Opsgenie Integration
