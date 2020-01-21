@@ -22,7 +22,6 @@ spec:
     spec:
       containers:
         - name: cert-checker
-          image: wojtekw92/cert-checker:0.0.2
           resources:
             limits:
               cpu: 200m
@@ -30,8 +29,8 @@ spec:
             requests:
               cpu: 50m
               memory: 128Mi
-          command:
-            - -t 300
-            # add domains here
-            - -d www.google.com
-            - expired.badssl.com
+          image: wojtekw92/cert-checker:0.0.3
+          args: ["-d",
+            "www.google.com",
+            "expired.badssl.com"
+          ]
