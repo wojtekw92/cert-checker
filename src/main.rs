@@ -86,7 +86,7 @@ fn main() {
                     .alias(format!("{} certyficate issues!", received.domain).to_string())
                     .source("cert-checker".to_string())
                     .entity(received.domain)
-                    .priority(Priority::P1);
+                    .priority(Priority::P5);
                 match opsgenie.alert(alert) {
                     Err(e) => println!("Error while sending alert with msg {}!", e),
                     _ => (),
