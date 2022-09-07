@@ -18,46 +18,47 @@ pub fn get_value<T: FromStr>(input: Option<&str>, default_value: T ) -> T {
     }
 }
 
-pub fn parse_params() -> ArgMatches<'static> {
+pub fn parse_params() -> ArgMatches {
     App::new("cert-checker")
         .version("1.0")
         .author("Wojciech Wozniak <wwozniak92@gmail.com>")
         .about("certyficate checking tool")
         .arg(
             Arg::with_name("time")
-                .short("t")
+                .short('t')
                 .help("The sleep time between tests")
                 .default_value("300")
         )
         .arg(
             Arg::with_name("left")
-                .short("l")
+                .short('l')
                 .help("Time before expiration that should be warning in days")
                 .default_value("5")
         )
         .arg(
             Arg::with_name("webhook")
-                .short("w")
+                .short('w')
                 .help("Webhook for failed or failing soon certs")
                 .value_name("URL")
                 .takes_value(true)
         )
         .arg(
             Arg::with_name("opsgenie")
-                .short("o")
+                .short('o')
                 .help("opsgenie intergration to infrom about soon failing certs")
                 .value_name("API-KEY")
                 .takes_value(true)
         )
         .arg(
             Arg::with_name("json")
-                .short("j")
+                .short('j')
                 .help("json output log")
             )
         .arg(
             Arg::with_name("domain")
                 .required(true)
-                .short("d")
+                .short('d')
+                .allow_invalid_utf8(true)
                 .help("Domain names to check")
                 .min_values(1)
         )
