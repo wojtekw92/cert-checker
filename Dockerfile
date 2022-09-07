@@ -18,7 +18,7 @@ RUN cargo install --path .
 # Final Stage
 # ------------------------------------------------------------------------------
 
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 RUN apt-get update &&\
     apt-get install --no-install-recommends libssl1.1 ca-certificates dumb-init -y  &&\
     rm -rf /var/lib/apt/lists/*

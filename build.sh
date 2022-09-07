@@ -7,7 +7,7 @@ echo "Building new image with version $VERSION_TAG"
 
 #TODO: check if everything is commited and puhsed to the repo
 
-docker build . -t REPO_NAME
+docker build . -t ${REPO_NAME}
 
 docker tag ${REPO_NAME}:latest ${REPO_NAME}:$VERSION_TAG
 
@@ -16,5 +16,5 @@ docker push ${REPO_NAME}:$VERSION_TAG
 
 
 # TODO: Get proper tag info
-git tag -a $VERSION_TAG -m "????"
+git tag -a $VERSION_TAG -m "New Release"
 git push origin $VERSION_TAG
