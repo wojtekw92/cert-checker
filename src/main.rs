@@ -8,7 +8,7 @@ use opsgenie::*;
 
 mod helpers;
 mod cert_info;
-use cert_info::{CertyficateStatus, CertyficateData};
+use cert_info::{CertificateStatus, CertificateData};
 
 fn main() {
     let matches = helpers::parse_params();
@@ -34,19 +34,19 @@ fn main() {
             let exp = SslExpiration::from_domain_name(&domain);
             match exp {
                 Ok(expiration) => {
-                    let status = CertyficateData::new(
+                    let status = CertificateData::new(
                         domain, 
                         expiration.days(),
                         match expiration.days() {
-                            x if x > left_warning_time => CertyficateStatus::Valid,
-                            x if x > 0  => CertyficateStatus::SoonInvalid,
-                            _ => CertyficateStatus::Invalid
+                            x if x > left_warning_time => CertificateStatus::Valid,
+                            x if x > 0  => CertificateStatus::SoonInvalid,
+                            _ => CertificateStatus::Invalid
                         }
                     );
                     match matches.is_present("json") {
                         true => match serde_json::to_string(&status) {
                             Ok(x) => println!("{}", x),
-                            Err(e) => eprintln!("Error during parsing CertyficateData: {}", e)
+                            Err(e) => eprintln!("Error during parsing CertificateData: {}", e)
                         },
                         false => println!("[{}] {}  status: {:?} left: {}",
                             status.time_stamp,
@@ -61,9 +61,9 @@ fn main() {
 
                     // Add opsgenie integration below instead logging
                     // match status.status {
-                    //     CertyficateStatus::Valid => (),
-                    //     CertyficateStatus::SoonInvalid => println!("Warning! Certyficate for domain {}  will expire in {} days!", status.domain, status.expire_in.unwrap()),
-                    //     CertyficateStatus::Invalid => println!("Error Certyficate for domain {} is invalid!", status.domain)
+                    //     CertificateStatus::Valid => (),
+                    //     CertificateStatus::SoonInvalid => println!("Warning! Certificate for domain {}  will expire in {} days!", status.domain, status.expire_in.unwrap()),
+                    //     CertificateStatus::Invalid => println!("Error Certificate for domain {} is invalid!", status.domain)
                     // }
                     tx.send(status).unwrap()
                 },
@@ -77,13 +77,13 @@ fn main() {
     for received in rx {
         // println!("Got: {:?}", received.status);
 
-        if received.status == CertyficateStatus::Valid {
+        if received.status == CertificateStatus::Valid {
 
-        } else if received.status == CertyficateStatus::SoonInvalid {
+        } else if received.status == CertificateStatus::SoonInvalid {
             if let Some(key) = &opsgenie_key {
                 let opsgenie = OpsGenie::new(key.to_string());
-                let alert = AlertData::new(format!("Warning! Certyficate for domain {}  will expire in {} days!", received.domain, received.expire_in.unwrap()).to_string())
-                    .alias(format!("{} certyficate issues!", received.domain).to_string())
+                let alert = AlertData::new(format!("Warning! Certificate for domain {}  will expire in {} days!", received.domain, received.expire_in.unwrap()).to_string())
+                    .alias(format!("{} Certificate issues!", received.domain).to_string())
                     .source("cert-checker".to_string())
                     .entity(received.domain)
                     .priority(Priority::P5);
@@ -96,8 +96,8 @@ fn main() {
         } else {
             if let Some(key) = &opsgenie_key {
                 let opsgenie = OpsGenie::new(key.to_string());
-                let alert = AlertData::new(format!("Error Certyficate for domain {} is invalid!", received.domain).to_string())
-                    .alias(format!("{} certyficate issues!", received.domain).to_string())
+                let alert = AlertData::new(format!("Error Certificate for domain {} is invalid!", received.domain).to_string())
+                    .alias(format!("{} Certificate issues!", received.domain).to_string())
                     .source("cert-checker".to_string())
                     .entity(received.domain)
                     .priority(Priority::P1);

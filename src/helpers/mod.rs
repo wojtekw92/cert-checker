@@ -22,7 +22,7 @@ pub fn parse_params() -> ArgMatches {
     App::new("cert-checker")
         .version("1.0")
         .author("Wojciech Wozniak <wwozniak92@gmail.com>")
-        .about("certyficate checking tool")
+        .about("Certificate checking tool")
         .arg(
             Arg::with_name("time")
                 .short('t')

@@ -19,7 +19,7 @@ in `k8s` dir you have ready to use deployment file you just need to chage domain
 ```
 cert-checker 1.0
 Wojciech Wozniak <wwozniak92@gmail.com>
-certyficate checking tool
+Certificate checking tool
 
 USAGE:
     cert-checker [FLAGS] [OPTIONS] -d <domain>

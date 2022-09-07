@@ -3,7 +3,7 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[serde(rename_all="camelCase")]
-pub enum CertyficateStatus {
+pub enum CertificateStatus {
     Valid,
     SoonInvalid,
     Invalid,
@@ -11,9 +11,9 @@ pub enum CertyficateStatus {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all="camelCase")]
-pub struct CertyficateData {
+pub struct CertificateData {
     pub domain: String,
-    pub status: CertyficateStatus,
+    pub status: CertificateStatus,
     pub time_stamp: String,
     #[serde(skip_serializing_if="Option::is_none")]
     pub expire_in: Option<i32>,
@@ -21,9 +21,9 @@ pub struct CertyficateData {
     pub expired_for: Option<i32>,
 }
 
-impl CertyficateData {
-    pub fn new(domain: &String, expire:i32, status: CertyficateStatus) -> CertyficateData {
-        CertyficateData {
+impl CertificateData {
+    pub fn new(domain: &String, expire:i32, status: CertificateStatus) -> CertificateData {
+        CertificateData {
             domain: domain.to_string(),
             status: status.clone(),
             time_stamp: Local::now().to_rfc3339(),
